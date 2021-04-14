@@ -4,6 +4,7 @@ exports.up = function (knex) {
         table.string("title").notNull();
         table.string("url").unique();
         table.string("tags");
+        table.string("vvid");
         table.timestamps(false, true);
     });
 };
