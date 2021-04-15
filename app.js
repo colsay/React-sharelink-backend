@@ -18,33 +18,46 @@ app.use(cors());
 
 
 app.get('/', (req, res) => {
-    let links = knex
-        .select('id', 'title', 'url', 'vvid').from('sharelink')
-    console.log(links)
-    return links;
+    knex
+        .select('id', 'title', 'url', 'tags', 'vvid').from('sharelink')
+        .then((obj) => {
+            res.json(obj)
+            console.log(obj, 'this is get request')
+        })
 
 })
 
 app.post('/', (req, res) => {
-
+    console.log(req.body)
     const item = req.body
     knex('sharelink')
         .insert({ title: item.name, url: item.url, tags: item.tags, vvid: item.id })
         .then(() => {
             console.log('inserted')
+            knex.select('id', 'title', 'url', 'tags', 'vvid').from('sharelink')
+                .then((obj) => {
+                    res.json(obj)
+                    console.log(obj)
+                })
         })
-
 
 })
 
 app.delete('/', (req, res) => {
-
+    console.log(req.body, 'deleting this')
     const item = req.body
     return knex('sharelink')
-        .where('vvid', item.id).del()
+        .where('vvid', item.vvid).del()
         .then(() => {
             console.log('deleted')
+            // knex.select('id', 'title', 'url', 'tags', 'vvid').from('sharelink')
+            //     .then((obj) => {
+            //         res.json(obj)
+            //         console.log(obj, 'after delete')
+            //     })
         })
+
+
 })
 
 
